@@ -1,18 +1,17 @@
-<!--
-  Generated template for the SafePage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
   <ion-navbar>
     <ion-title>Kluis</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="addAccount()"><ion-icon name="add"></ion-icon></button>
+    </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
-
-<ion-content padding>
-
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let account of accounts" (click)="showDetails(account)">
+      <ion-icon item-start name="{{account.platformIcon}}"></ion-icon>
+      <h2>{{account.platform}}</h2>
+    </ion-item>
+  </ion-list>
 </ion-content>

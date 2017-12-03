@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="viewCtrl.dismiss()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{account.platform}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item (click)="copyToClipboard(account.username)">
+      <ion-icon name="person" item-left></ion-icon>
+      <ion-input type="text" value="{{account.username}}" readonly></ion-input>
+    </ion-item>
+    <ion-item (click)="copyToClipboard(account.password)">
+      <ion-icon name="lock" item-left></ion-icon>
+      <ion-input type="{{showPassword ? 'text' : 'password'}}" value="{{account.password}}" readonly></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <div padding-left>
+    <button ion-button (click)="togglePassword()">Toon wachtwoord</button>
+  </div>
+</ion-content>

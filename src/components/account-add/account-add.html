@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="viewCtrl.dismiss()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Wachtwoord toevoegen</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <ion-list>
+      <ion-item>
+        <ion-label stacked>Platform</ion-label>
+        <ion-input type="text" formControlName="platform"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Gebruikersnaam</ion-label>
+        <ion-input type="text" formControlName="username"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Wachtwoord</ion-label>
+        <ion-input type="password" formControlName="password"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <button ion-button [disabled]="!form.valid">Opslaan</button>
+  </form>
+</ion-content>
