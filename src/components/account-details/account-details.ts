@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Account } from "../../models/account"
-import {NavParams, ViewController} from "ionic-angular";
+import {NavParams, ToastController, ViewController} from "ionic-angular";
+import {Clipboard} from "@ionic-native/clipboard";
 
 @Component({
   selector: 'account-details',
@@ -12,12 +13,19 @@ export class AccountDetailsComponent {
   private showPassword: boolean = false;
 
   constructor(public navParams: NavParams,
-              public viewCtrl: ViewController) {
+              public viewCtrl: ViewController,
+              private clipboard: Clipboard,
+              private toastCtrl: ToastController) {
     this.account = this.navParams.data.account;
   }
 
   copyToClipboard(data) {
-    console.log('coppied: ' + data);
+    this.clipboard.copy(data).then(() => {
+      this.toastCtrl.create({
+        message: this.account.platform + ' gekopieerd naar clipboard',
+        duration: 3000,
+      }).present();
+    });
   }
 
   togglePassword() {
