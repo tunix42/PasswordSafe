@@ -22,7 +22,7 @@ export class SafePage {
 
   ionViewDidLoad() {
     this.accountsService.getAll().then((accounts) => {
-      this.accounts = accounts;
+      this.accounts = accounts || [];
     });
   }
 

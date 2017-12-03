@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Account} from "../../models/account";
 import {NavParams, ToastController, ViewController} from "ionic-angular";
 import {AccountServiceProvider} from "../../providers/account-service/account-service";
+import {existValidator} from "../../providers/validators/exist.validator";
 
 @Component({
   selector: 'account-add',
@@ -17,13 +18,19 @@ export class AccountAddComponent {
               private accountService: AccountServiceProvider,
               private navParams: NavParams,
               private toastCtrl: ToastController) {
-    this.renderForm(this.navParams.data.account || new Account());
+    this.renderForm(this.navParams.data.account);
+    this.accountService.getAll().then((accounts: Account[]) => {
+      if(accounts) {
+        let platforms = accounts.map(account => account.platform);
+        this.renderForm(this.navParams.data.account, platforms);
+      }
+    });
   }
 
-  renderForm(account) {
+  renderForm(account: Account = new Account(), existingPlatforms = null) {
     this.form = this.formBuilder.group(
       {
-        platform: [account.platform || '', Validators.required],
+        platform: [account.platform || '', [Validators.required, existValidator(existingPlatforms)]],
         platformIcon: [account.platformIcon || 'lock', Validators.required],
         username: [account.username || ''],
         password: [account.password || '', Validators.required]
