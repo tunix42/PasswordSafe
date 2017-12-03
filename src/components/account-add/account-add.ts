@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Account} from "../../models/account";
 import {NavParams, ToastController, ViewController} from "ionic-angular";
-import {AccountServiceProvider} from "../../providers/account-service/account-service";
+import {AccountServiceProvider} from "../../providers/services/account-service";
 import {existValidator} from "../../providers/validators/exist.validator";
 
 @Component({

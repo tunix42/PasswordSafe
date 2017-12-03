@@ -6,6 +6,14 @@
       </button>
     </ion-buttons>
     <ion-title>{{account.platform}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="deleteAccount()">
+        <ion-icon name="trash"></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="editAccount()">
+        <ion-icon name="create"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 

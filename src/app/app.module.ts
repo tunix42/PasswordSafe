@@ -8,7 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { PasswordSafe } from './app.component';
 import { AccountAddComponent } from "../components/account-add/account-add";
-import { AccountServiceProvider } from '../providers/account-service/account-service';
+import { AccountServiceProvider } from '../providers/services/account-service';
 import { AccountDetailsComponent } from "../components/account-details/account-details";
 import { Clipboard } from "@ionic-native/clipboard";
 

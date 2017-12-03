@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AlertController, IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
 import { AccountAddComponent } from "../../components/account-add/account-add";
-import { AccountServiceProvider } from "../../providers/account-service/account-service";
+import { AccountServiceProvider } from "../../providers/services/account-service";
 import { AccountDetailsComponent } from "../../components/account-details/account-details";
 
 @IonicPage()
@@ -21,6 +21,10 @@ export class SafePage {
   }
 
   ionViewDidLoad() {
+    this.getAccounts();
+  }
+
+  getAccounts() {
     this.accountsService.getAll().then((accounts) => {
       this.accounts = accounts || [];
     });
@@ -39,6 +43,9 @@ export class SafePage {
 
   showDetails(account: Account) {
     let modal = this.modalCtrl.create(AccountDetailsComponent, {account: account});
+    modal.onDidDismiss(() => {
+      this.getAccounts();
+    });
     modal.present();
   }
 
