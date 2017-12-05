@@ -56,9 +56,14 @@ export class LoginPage {
   }
 
   register() {
-    this.authService.setPassword(this.registerForm.value).then((newHash) => {
+    this.authService.registerPassword(this.registerForm.value).then((newHash) => {
+      this.registered = true;
+      this.segment = 'login';
       this.renderRegisterForm();
-    })
+    },
+      (error) => {
+      this.authService.showToast(error);
+      })
 
   }
 

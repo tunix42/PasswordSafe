@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import { Storage } from '@ionic/storage';
 import {timer} from "rxjs/observable/timer";
 import {Events, ToastController, Platform} from "ionic-angular";
+import {Md5} from 'ts-md5/dist/md5';
 
 @Injectable()
 export class AuthServiceProvider {
@@ -24,28 +25,43 @@ export class AuthServiceProvider {
     return this.storage.get(this.passwordKey);
   }
 
-  setPassword(passwordForm) {
-    return this.login(passwordForm.oldPassword).then((authenticated) => {
-      if(authenticated) {
-        let confirmation = passwordForm.newPassword === passwordForm.confirmPassword;
-        if(confirmation) {
-          let hash = this.hash(passwordForm.newPassword);
-          return this.storage.set(this.passwordKey, hash).then((newHash) => {
-            this.showToast('Nieuw wachtwoord geregistreerd');
-          });
-        }
-      }
+  setPassword(newPassword) {
+    let hash = Md5.hashStr(newPassword);
+    return this.storage.set(this.passwordKey, hash).then((newHash) => {
+      this.showToast('Nieuw wachtwoord geregistreerd');
+      return newHash;
     });
   }
 
-  hash(password) {
-    //Todo Real hash
-    return password;
+  registerPassword(passwordForm) {
+    return new Promise((resolve, reject) => {
+      if(passwordForm.newPassword !== passwordForm.confirmPassword) reject('Nieuwe wachtwoorden komen niet overeen');
+
+      this.getPassword().then((savedPassword) => {
+        if(savedPassword){
+          this.login(passwordForm.oldPassword).then((authenticated) => {
+            if(!authenticated) {
+              reject('Oude wachtwoord is onjuist');
+            }
+            else{
+              this.setPassword(passwordForm.newPassword).then((newHash) => {
+                resolve(newHash);
+              });
+            }
+          });
+        }
+        else{
+          this.setPassword(passwordForm.newPassword).then((newHash) => {
+            resolve(newHash);
+          });
+        }
+      });
+    });
   }
 
   login(password) {
     return this.getPassword().then((hashedPassword) => {
-      this.authenticated = hashedPassword === this.hash(password);
+      this.authenticated = hashedPassword === Md5.hashStr(password);
       if(this.authenticated) {
         this.setExpiration();
         this.showToast('Je bent ingelogd');
