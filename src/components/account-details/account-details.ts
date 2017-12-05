@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { Account } from "../../models/account"
-import {AlertController, NavParams, ToastController, ViewController} from "ionic-angular";
+import {AlertController, Events, NavParams, ToastController, ViewController} from "ionic-angular";
 import {Clipboard} from "@ionic-native/clipboard";
 import {AccountServiceProvider} from "../../providers/services/account-service";
+import {AuthServiceProvider} from "../../providers/services/auth-service";
 
 @Component({
   selector: 'account-details',
@@ -18,8 +19,17 @@ export class AccountDetailsComponent {
               private clipboard: Clipboard,
               private toastCtrl: ToastController,
               private alertCtrl: AlertController,
-              private accountService: AccountServiceProvider) {
+              private accountService: AccountServiceProvider,
+              private events: Events,
+              private authService: AuthServiceProvider) {
     this.account = this.navParams.data.account;
+    this.events.subscribe('authService:logout', () => {
+      this.viewCtrl.dismiss();
+    });
+  }
+
+  ionViewCanEnter() {
+    return this.authService.isAuthenticated();
   }
 
   copyToClipboard(data) {

@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
+import {AlertController, Events, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import { AccountAddComponent } from "../../components/account-add/account-add";
 import { AccountServiceProvider } from "../../providers/services/account-service";
 import { AccountDetailsComponent } from "../../components/account-details/account-details";
+import {AuthServiceProvider} from "../../providers/services/auth-service";
 
 @IonicPage()
 @Component({
@@ -17,11 +18,20 @@ export class SafePage {
               public navParams: NavParams,
               public modalCtrl: ModalController,
               public accountsService: AccountServiceProvider,
-              public alertCtrl: AlertController) {
+              public alertCtrl: AlertController,
+              private events: Events,
+              private authService: AuthServiceProvider) {
   }
 
   ionViewDidLoad() {
     this.getAccounts();
+    this.events.subscribe('authService:logout', () => {
+      this.navCtrl.setRoot('LoginPage');
+    });
+  }
+
+  ionViewCanEnter() {
+    return this.authService.isAuthenticated();
   }
 
   getAccounts() {

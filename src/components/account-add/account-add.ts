@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Account} from "../../models/account";
-import {NavParams, ToastController, ViewController} from "ionic-angular";
+import {Events, NavParams, ToastController, ViewController} from "ionic-angular";
 import {AccountServiceProvider} from "../../providers/services/account-service";
 import {existValidator} from "../../providers/validators/exist.validator";
+import {AuthServiceProvider} from "../../providers/services/auth-service";
 
 @Component({
   selector: 'account-add',
@@ -17,7 +18,9 @@ export class AccountAddComponent {
               private viewCtrl: ViewController,
               private accountService: AccountServiceProvider,
               private navParams: NavParams,
-              private toastCtrl: ToastController) {
+              private toastCtrl: ToastController,
+              private events: Events,
+              private authService: AuthServiceProvider) {
     this.renderForm(this.navParams.data.account);
     this.accountService.getAll().then((accounts: Account[]) => {
       if(accounts) {
@@ -25,6 +28,13 @@ export class AccountAddComponent {
         this.renderForm(this.navParams.data.account, platforms);
       }
     });
+    this.events.subscribe('authService:logout', () => {
+      this.viewCtrl.dismiss();
+    });
+  }
+
+  ionViewCanEnter() {
+    return this.authService.isAuthenticated();
   }
 
   renderForm(account: Account = new Account(), existingPlatforms = null) {

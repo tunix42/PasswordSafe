@@ -11,6 +11,7 @@ import { AccountAddComponent } from "../components/account-add/account-add";
 import { AccountServiceProvider } from '../providers/services/account-service';
 import { AccountDetailsComponent } from "../components/account-details/account-details";
 import { Clipboard } from "@ionic-native/clipboard";
+import { AuthServiceProvider } from "../providers/services/auth-service";
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { Clipboard } from "@ionic-native/clipboard";
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AccountServiceProvider,
-    Clipboard
+    Clipboard,
+    AuthServiceProvider
   ]
 })
 export class AppModule {}
