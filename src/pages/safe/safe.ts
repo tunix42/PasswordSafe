@@ -43,8 +43,8 @@ export class SafePage {
   addAccount() {
     let modal = this.modalCtrl.create(AccountAddComponent,
       {
-        addAccount: (newAccount) => {
-          this.accounts.push(newAccount);
+        refreshAccounts: () => {
+          this.getAccounts();
         }
       }
     );

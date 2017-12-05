@@ -26,6 +26,7 @@ export class AccountServiceProvider {
     return new Promise((resolve) => {
       this.getAll().then((accounts) => {
         accounts = accounts || [];
+        //todo: Check if account exists
         accounts.push(account);
         this.storage.set('accounts', accounts).then((setAccounts) => {
           resolve(setAccounts);

@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { Account } from "../../models/account"
-import {AlertController, Events, NavParams, ToastController, ViewController} from "ionic-angular";
+import {AlertController, Events, ModalController, NavParams, ToastController, ViewController} from "ionic-angular";
 import {Clipboard} from "@ionic-native/clipboard";
 import {AccountServiceProvider} from "../../providers/services/account-service";
 import {AuthServiceProvider} from "../../providers/services/auth-service";
+import {AccountAddComponent} from "../account-add/account-add";
 
 @Component({
   selector: 'account-details',
@@ -21,7 +22,8 @@ export class AccountDetailsComponent {
               private alertCtrl: AlertController,
               private accountService: AccountServiceProvider,
               private events: Events,
-              private authService: AuthServiceProvider) {
+              private authService: AuthServiceProvider,
+              private modalCtrl: ModalController) {
     this.account = this.navParams.data.account;
     this.events.subscribe('authService:logout', () => {
       this.viewCtrl.dismiss();
@@ -46,7 +48,15 @@ export class AccountDetailsComponent {
   }
 
   editAccount() {
+    let modal = this.modalCtrl.create(AccountAddComponent,
+      {
+        account: this.account,
+        refreshAccounts: () => {
 
+        }
+      }
+    );
+    modal.present();
   }
 
   deleteAccount() {

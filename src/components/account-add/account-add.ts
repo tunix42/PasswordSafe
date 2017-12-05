@@ -25,6 +25,10 @@ export class AccountAddComponent {
     this.accountService.getAll().then((accounts: Account[]) => {
       if(accounts) {
         let platforms = accounts.map(account => account.platform);
+        if(this.navParams.data.account) {
+          let index = platforms.indexOf(this.navParams.data.account.platform);
+          platforms.splice(index);
+        }
         this.renderForm(this.navParams.data.account, platforms);
       }
     });
@@ -53,7 +57,7 @@ export class AccountAddComponent {
     this.accountService.save(newAccount)
       .then(
         (accounts) => {
-          this.navParams.data.addAccount(newAccount);
+          this.navParams.data.refreshAccounts(newAccount);
           this.toastCtrl.create({
             message: newAccount.platform + ' account is opgeslagen!',
             duration: 3000,
